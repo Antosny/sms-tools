@@ -61,5 +61,35 @@ def suppressFreqDFTmodel(x, fs, N):
     M = len(x)
     w = get_window('hamming', M)
     outputScaleFactor = sum(w)
-    
+    #print N
     ## Your code here
+    dftv = dftAnal(x, w, N)
+    #print dftv[0].shape
+    filterDft = dftv[0].copy()
+    for i in range(len(filterDft)):
+        fz = fs * i / N
+        filterDft[i] = -120
+        if fz > 70:
+            break
+        #print str(fz) + ' ' + str(i)
+
+    return (dftSynth(dftv[0], dftv[1], M) * outputScaleFactor, dftSynth(filterDft, dftv[1], M) * outputScaleFactor)
+
+
+if __name__ == '__main__':
+    from loadTestCases import load
+    x = load(4, 1)
+    from matplotlib import pyplot as plt
+    #plt.plot( x['output'][0])
+    #plt.plot( x['output'][1])
+    #plt.show()
+    tmpout = suppressFreqDFTmodel(**x['input'])
+    M = len(x['output'][1])
+    #print dftAnal(x['output'][1], get_window('boxcar', M), M)[0]
+    #print dftAnal(tmpout[1], get_window('boxcar', M), M)[0]
+    print x['output'][0][:10]
+    print tmpout[0][:10]
+    #plt.plot( tmpout[0])
+    #plt.plot( tmpout[1])
+    #plt.show()
+

@@ -50,16 +50,20 @@ def testRealEven(x):
     """
     ## Your code here
     idx = len(x) / 2
-    trans = np.append(x[idx:], x[:idx])
+    trans = np.concatenate((x[idx:], x[:idx])).astype(float)
     #print trans
     dft = fft(trans)
     isrealeven = True
+    for i in range(0, idx):
+        if np.imag(x[i]) != 0 or x[i] != x[-(i+1)]:
+            isrealeven = False
+            break
     for d in dft:
         if abs(np.imag(d)) != 0:
             isrealeven = False
             break
     for i in range(1, len(dft)):
-        if np.real(dft[i]) != np.real(dft[-i]):
+        if abs(np.real(dft[i]) - np.real(dft[-i])) > 0.000000000001:
             isrealeven = False
     return (isrealeven, trans, dft)
 
@@ -67,6 +71,7 @@ def testRealEven(x):
 
 if __name__ == '__main__':
     from loadTestCases import load
-    x = load(3)
+    x = load(3, 2)
     print x['output']
     print testRealEven(**x['input'])
+    
