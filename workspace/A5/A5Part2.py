@@ -62,7 +62,7 @@ def chirpTracker(inputFile='../../sounds/chirp-150-190-linear.wav'):
            K is the number of frames
     """
     # Analysis parameters: Modify values of the parameters marked XX
-    M = XX                                # Window size in samples
+    M = 4121                                # Window size in samples
     
     ### Go through the code below and understand it, do not modify anything ###    
     H = 128                                     # Hop size in samples
@@ -118,3 +118,5 @@ def genTrueFreqTracks(tStamps):
     fTrack[:,1] = np.transpose(np.linspace(150, 150+1250, len(tStamps)))
     return fTrack
     
+
+chirpTracker()
